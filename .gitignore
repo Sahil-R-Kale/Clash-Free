@@ -1,0 +1,13 @@
+# Virtualenv gitignore
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+ClashFree PPT.pptx
+ClashFree.mp4
+**/__pycache__/
