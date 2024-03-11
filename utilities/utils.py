@@ -1,9 +1,14 @@
 from tabula.io import read_pdf
 import datetime
-import csv
+import csv,string,random
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
+from utilities.db_services import connect_to_db
+
+def make_id(length):
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for i in range(length))
 
 def load_data_from_PDF(pdf):
     tables = read_pdf(pdf, pages='all')
@@ -46,20 +51,37 @@ def load_data_from_PDF(pdf):
     df = tables[1]
     return subjects, lab_rooms, teachers
 
-def make_pdf(class_name,column,table,timings):
+def make_pdf(class_name,column,timings,session_id):
+        weekdays = ['Monday','Tuesday','Wednesday','Thursday','Friday']
         try: 
             export_data=[]
+            for i in range(len(timings)):
+                export_data.append([timings[i]])
+                export_data.append([""])
+                export_data.append([""])
             csv_file = 'temp_data.csv'
-            for row in range(1,len(table)+1):
-                if(row==3 or row==5):
-                    export_data.append(["Break"])
-                l1=[timings[((row-1)%6)],str(table[row][column].label1._text)]
-                l2=['',str(table[row][column].label2._text)]
-                l3=['',str(table[row][column].label3._text)]
-                export_data.append(l1)
-                export_data.append(l2)
-                export_data.append(l3)
+            for i,weekday in enumerate(weekdays):
+                collection = connect_to_db()
+                data = collection.find_one({'session_id':session_id,'day':weekday})
+                if data and 'data' in data:
+                    for j in range(len(data['data'])):
+                        subject=str(data['data'][j][3*column])
+                        teacher=str(data['data'][j][3*column+1])
+                        room=str(data['data'][j][3*column+2])
+                        export_data[3*j].append(subject)
+                        export_data[3*j+1].append(teacher)
+                        export_data[3*j+2].append(room)
+                else:
+                    for j in range(len(timings)):
+                        subject=""
+                        teacher=""
+                        room=""
+                        export_data[3*j].append(subject)
+                        export_data[3*j+1].append(teacher)
+                        export_data[3*j+2].append(room)
             export_data.insert(0,['Timing','Monday','Tuesday','Wednesday','Thursday','Friday'])
+            export_data.insert(7,["Break"])
+            export_data.insert(14,["Break"])
             with open(csv_file, 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 for sublist in export_data:
@@ -102,6 +124,7 @@ def make_pdf(class_name,column,table,timings):
             doc.title='Time Table'
             doc.build([paragraph_1,table])
             return "Success"
-        except Exception:
+        except Exception as e:
+            print("Exception",e)
             return None
 
