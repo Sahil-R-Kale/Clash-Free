@@ -108,7 +108,7 @@ class TimetableApp():
         #     for col in row:
         #         self.passedSubjects.append(col)
 
-        self.day_menu = ctk.StringVar(value="Select Day")
+        self.day_menu = ctk.StringVar(value="Monday")
         drop = ctk.CTkOptionMenu(master=self.app_frame, variable=self.day_menu,
                                  values=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],command=self._on_day_select)
         drop.grid(row=0, column=2, sticky="ew", padx=5, pady=5)
@@ -130,7 +130,7 @@ class TimetableApp():
                                       text_color="black", border_color="#5D9C59", command=self._save_day,
                                       height=28, width=100, font=('Arial Bold', 15), corner_radius=8)
         
-        ValiateButton = ctk.CTkButton(master=self.app_frame, text="Validate", border_width=2, fg_color="#C7E8CA", hover_color="#C7FFCA",
+        ValidateButton = ctk.CTkButton(master=self.app_frame, text="Validate", border_width=2, fg_color="#C7E8CA", hover_color="#C7FFCA",
                                       text_color="black", border_color="#5D9C59", command=self.on_button_validation,
                                       height=28, width=100, font=('Arial Bold', 15), corner_radius=8)
         ExportButton = ctk.CTkButton(master=self.app_frame, text="Export", border_width=2, fg_color="#C7E8CA",hover_color="#C7FFCA",
@@ -161,10 +161,10 @@ class TimetableApp():
             widget.bind("<Button-1>", self.on_subject_click)
             self.room_widgets.append(widget)
 
-        ValiateButton.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-        SaveButton.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
+        ValidateButton.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+        SaveButton.grid(row=1, column=2, sticky="ew", padx=5, pady=5)
         ExportButton.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
-        self.subject_widgets.append(ValiateButton)
+        self.subject_widgets.append(ValidateButton)
 
         for i, day in enumerate(classes):
             widget = ctk.CTkLabel(self.app_frame, text=day, fg_color="#3A98B9", padx=10, pady=5, corner_radius=8,
