@@ -27,7 +27,7 @@ COLLECTION_NAME = <Any valid MongoDB collection name>
 ```
 python3 main_build.py
 ```
-6. Design your own schedule, validate on the go, save each day, and hit export for the class needed. The PDF will be generated in the outptuts folder on your local machine. 
+6. Design your own schedule, validate on the go, save each day, and hit export for the class needed. The PDF will be generated in the outputs folder on your local machine. 
 
 ## ClashFree Project Tour
 
