@@ -1,7 +1,8 @@
 # ClashFree
 
 ClashFree is an automatic timetable builder and validation tool that provides a user friendly workspace to design schedules in a robust way.  
-Key functionalities and features include:
+
+## Key functionalities and features
 
 * Drag and drop UI which allows speedy modifications in the schedule, without requiring manual input of long names!
 * Clashes between resources can be validated with a single button click, allowing the human scheduler to focus on more important aspects of timetable design.
@@ -9,9 +10,26 @@ Key functionalities and features include:
 * The workspace opens up with a pre-filled schedule containing subject names, which can be later modified as required by the human scheduler. This initial state of the timetable is not random, rather it is genrated using the Genetic Algorithm with common constraints which can be modified as per your needs!
 * Once a complete and consistent schedule has been developed, a user has the choice of exporting time-tables for each class as a PDF for further actions. 
 
-Note : In order to see ClashFree in action, please clone the ClashFree repo and execute the Python script (Time_Table_Code.py) it contains. Design your own schedule, validate on the go and hit export! The PDF will be generated in your workspace folder on your local machine. 
 
-Here is a quick tour of our project- ClashFree!
+## How to run ClashFree
+1. Clone the repo
+2. Create a virtual environment and copy the project folder into it (optional)
+3. Install the required dependencies using the command:
+```
+pip install -r requirements.txt
+```
+4. Create a .env file and add the following environment variables
+```
+DB_CONNECTION_STRING = <MongoDB Connection String>
+COLLECTION_NAME = <Any valid MongoDB collection name>
+```
+5. Run the main_build file to start ClashFree
+```
+python3 main_build.py
+```
+6. Design your own schedule, validate on the go, save each day, and hit export for the class needed. The PDF will be generated in the outptuts folder on your local machine. 
+
+## ClashFree Project Tour
 
 
 ![Screenshot (61)](https://user-images.githubusercontent.com/107458263/234787596-f43120f2-abf2-4c47-a5f0-92843984df60.png)
