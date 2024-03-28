@@ -1,12 +1,13 @@
 import customtkinter as ctk
 import tkinter as tk
-import math
+import math,threading
 from tkinter import messagebox
 
 from utilities.db_services import connect_to_db
 from utilities.builder_data import classes,timings
 from utilities.utils import load_data_from_PDF,make_pdf,make_id
 from codescripts.timetable_tools import accumulate_cells,validation_algorithm,generate_timetable
+
 
 ctk.set_default_color_theme("dark-blue")
 ctk.set_appearance_mode("dark")
@@ -97,17 +98,6 @@ class TimetableApp():
         self.rooms = list(tup[1])
         self.room_widgets = []
 
-        # total_classes = len(classes)
-        # no_courses = len(self.subjects)
-        # slots = 6
-        # total_days = 1
-        # daily_repetition = 3
-        # table = generate_timetable(total_classes, no_courses, slots, total_days, daily_repetition)
-        # self.passedSubjects = []
-        # for row in table.run():
-        #     for col in row:
-        #         self.passedSubjects.append(col)
-
         self.day_menu = ctk.StringVar(value="Monday")
         drop = ctk.CTkOptionMenu(master=self.app_frame, variable=self.day_menu,
                                  values=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],command=self._on_day_select)
@@ -136,9 +126,9 @@ class TimetableApp():
         ExportButton = ctk.CTkButton(master=self.app_frame, text="Export", border_width=2, fg_color="#C7E8CA",hover_color="#C7FFCA",
                                       text_color="black", border_color="#5D9C59", command=self.exportPDF,
                                       height=28, width=100, font=('Arial Bold', 15), corner_radius=8)
-        '''ImportButton = ctk.CTkButton(master=self.app_frame, text="Import", border_width=2, fg_color="#C7E8CA",hover_color="#C7FFCA",
-                                      text_color="black", border_color="#5D9C59",
-                                      height=28, width=100, font=('Arial Bold', 15), corner_radius=8)'''
+        GenerateButton = ctk.CTkButton(master=self.app_frame, text="Auto-Generate", border_width=2, fg_color="#C7E8CA",hover_color="#C7FFCA",
+                                      text_color="black", border_color="#5D9C59",command=self._auto_generate,
+                                      height=28, width=100, font=('Arial Bold', 15), corner_radius=8)
         for i, subject in enumerate(self.subjects):
             widget = ctk.CTkLabel(self.app_frame, text=subject, fg_color="#4bcffa", text_color="black", padx=10, pady=5,
                                   corner_radius=8, font=("Britannic Bold", 12))
@@ -161,7 +151,8 @@ class TimetableApp():
             widget.bind("<Button-1>", self.on_subject_click)
             self.room_widgets.append(widget)
 
-        ValidateButton.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+        GenerateButton.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+        ValidateButton.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
         SaveButton.grid(row=1, column=2, sticky="ew", padx=5, pady=5)
         ExportButton.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
         self.subject_widgets.append(ValidateButton)
@@ -285,6 +276,31 @@ class TimetableApp():
                     table_row.append(widget)
                 self.table[row + 1] = table_row
                 
+    def _auto_generate(self):
+        self._clear_grid()
+        self.table = {}
+        total_classes = len(classes)
+        no_courses = len(self.subjects)
+        slots = 6
+        total_days = 1
+        daily_repetition = 3
+        messagebox.showinfo("Alert", f"Click OK to start auto-generation.\nPlease wait for a few seconds after.")
+        table = generate_timetable(total_classes, no_courses, slots, total_days, daily_repetition)
+        self.passedSubjects = []
+        for row in table.run():
+            for col in row:
+                self.passedSubjects.append(col)
+        for row in range(int(len(timings))):
+            table_row = []
+            for col in range(int(len(classes))):
+                widget = MyWidget([3 * row + 1, col + 4], subject=self.subjects[self.passedSubjects[col][row]-1],teacher="",room="", master=self.app_frame)
+                widget.grid(row=3 * row + 1, column=col + 4,
+                            sticky="nsew", padx=5, pady=5, rowspan=3)
+                widget.setdrop(self, master=self.app_frame)
+                widget.bind("<Button-1>", self.on_cell_click)
+                table_row.append(widget)
+            self.table[row + 1] = table_row
+
     def exportPDF(self):
         try:
             class_name=str(self.Class_select.get())
