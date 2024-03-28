@@ -1,13 +1,15 @@
 # ClashFree
 
-ClashFree is an automatic timetable builder and validation tool that provides a user friendly workspace to design schedules in a robust way.  
+ClashFree is an automatic timetable builder and validation tool that provides a user-friendly workspace to design schedules in a robust way.  
 
 ## Key functionalities and features
 
+Check out the YouTube explanation: https://youtu.be/Z_Ja8pG46rk
+
 * Drag and drop UI which allows speedy modifications in the schedule, without requiring manual input of long names!
 * Clashes between resources can be validated with a single button click, allowing the human scheduler to focus on more important aspects of timetable design.
-* Input data (Teacher names, Subject names and Room number labels) need not be manually fed; instead user can simply upload a relevant PDF document containing this data from which the labels are automatically extracted. (an example input file has been provided in the repo, called 'TECOMP AllClass TT-1.pdf')
-* The workspace opens up with a pre-filled schedule containing subject names, which can be later modified as required by the human scheduler. This initial state of the timetable is not random, rather it is genrated using the Genetic Algorithm with common constraints which can be modified as per your needs!
+* Input data (Teacher names, Subject names, and Room number labels) need not be manually fed; instead user can simply upload a relevant PDF document containing this data from which the labels are automatically extracted. (an example input file has been provided in the repo, called 'TECOMP AllClass TT-1.pdf')
+* The workspace opens up with a pre-filled schedule containing subject names, which can be later modified as required by the human scheduler. This initial state of the timetable is not random, rather it is generated using the Genetic Algorithm with common constraints which can be modified as per your needs!
 * Once a complete and consistent schedule has been developed, a user has the choice of exporting time-tables for each class as a PDF for further actions. 
 
 
