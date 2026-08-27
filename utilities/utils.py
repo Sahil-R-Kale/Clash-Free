@@ -1,6 +1,6 @@
 from tabula.io import read_pdf
 import datetime
-import csv,string,random
+import string,random
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
@@ -59,7 +59,6 @@ def make_pdf(class_name,column,timings,session_id):
                 export_data.append([timings[i]])
                 export_data.append([""])
                 export_data.append([""])
-            csv_file = 'temp_data.csv'
             for i,weekday in enumerate(weekdays):
                 collection = connect_to_db()
                 data = collection.find_one({'session_id':session_id,'day':weekday})
@@ -82,19 +81,10 @@ def make_pdf(class_name,column,timings,session_id):
             export_data.insert(0,['Timing','Monday','Tuesday','Wednesday','Thursday','Friday'])
             export_data.insert(7,["Break"])
             export_data.insert(14,["Break"])
-            with open(csv_file, 'w', newline='') as csvfile:
-                writer = csv.writer(csvfile)
-                for sublist in export_data:
-                    writer.writerow(sublist)
-            data = []
-            with open(csv_file, 'r') as f:
-                reader = csv.reader(f)
-                for row in reader:
-                    data.append(row)
             timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
             pdf_file = f'outputs/Time_Table_{timestamp}.pdf'
             doc = SimpleDocTemplate(pdf_file, pagesize=landscape(letter))
-            table = Table(data)
+            table = Table(export_data)
             table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), '#4bcffa'),  # Header row background color
             ('TEXTCOLOR', (0, 0), (-1, 0), '#000000'),  # Header row text color
