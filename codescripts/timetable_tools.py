@@ -13,19 +13,12 @@ def accumulate_cells(table):  # Accumulating Cells Data into timetableCells
             teacherName = str(w.getTeacherName())
             roomNumber = str(w.getRoomNumber())
 
-            if teacherName not in clash[r]:
-                if (teacherName != ""):
-                    clash[r][teacherName] = [c]
-            else:
-                if (teacherName != ""):
-                    clash[r][teacherName].append(c)
-
-            if roomNumber not in clash[r]:
-                if (roomNumber != ""):
-                    clash[r][roomNumber] = [c]
-            else:
-                if (roomNumber != ""):
-                    clash[r][roomNumber].append(c)
+            # Keep resource types separate: a teacher and a room can have the
+            # same label without representing a clash.
+            for resource_type, resource_name in (("teacher", teacherName), ("room", roomNumber)):
+                if resource_name:
+                    resource_key = (resource_type, resource_name)
+                    clash[r].setdefault(resource_key, []).append(c)
 
     return clash
 
