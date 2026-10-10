@@ -58,4 +58,4 @@ python3 main_build.py
 ## Future Scope:
 ![Screenshot (72)](https://user-images.githubusercontent.com/107458263/234789611-f3bb26b1-cbbb-40bf-a351-614b4f4c2a60.png)
 
-We hope you enjoy using ClashFree to make your scheduling as easy and as hassle-free as posssible! Kindly star the repo if you find it useful and relevant!
+We hope you enjoy using ClashFree to make your scheduling as easy and as hassle-free as possible! Kindly star the repo if you find it useful and relevant!
