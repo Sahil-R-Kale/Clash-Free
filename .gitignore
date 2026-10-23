@@ -12,3 +12,4 @@ ClashFree PPT.pptx
 ClashFree.mp4
 **/__pycache__/
 .env
+outputs/*.pdf
